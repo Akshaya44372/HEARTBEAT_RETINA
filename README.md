@@ -1,66 +1,56 @@
-# ❤️ Heartbeat Retina - Webcam-Based rPPG Heart Rate Monitor
+# ❤️ Heartbeat Retina
 
-Heartbeat Retina is a real-time, non-contact heart rate monitoring system that estimates a user's heart rate using a standard webcam. The project leverages **Remote Photoplethysmography (rPPG)**, a computer vision technique that detects subtle skin color variations caused by blood circulation.
+## Webcam-Based Real-Time Heart Rate Monitoring using rPPG
 
-Using **MediaPipe Face Mesh** for facial landmark detection and advanced signal processing techniques such as detrending, Butterworth bandpass filtering, and Fast Fourier Transform (FFT), the application provides continuous heart rate estimation without requiring any wearable sensors.
+Heartbeat Retina is a real-time, contactless heart rate monitoring system that estimates a user's heart rate using a standard webcam. The project utilizes Remote Photoplethysmography (rPPG), a computer vision technique that detects subtle skin color variations caused by blood circulation beneath the skin.
 
----
-
-## 📌 Project Overview
-
-Traditional heart rate monitoring relies on physical sensors attached to the body. Heartbeat Retina offers a contactless alternative by analyzing minute changes in the skin's green color channel captured through a webcam.
-
-The system tracks facial landmarks in real time, extracts a forehead Region of Interest (ROI), processes the collected signal, and estimates the user's heart rate in Beats Per Minute (BPM).
+The system combines MediaPipe Face Mesh, OpenCV, and advanced signal processing techniques to continuously monitor heart rate without requiring wearable sensors or physical contact.
 
 ---
 
 ## 🚀 Features
 
-### Real-Time Heart Rate Detection
+### Real-Time Heart Rate Estimation
+- Contactless heart rate monitoring through a webcam.
+- Continuous BPM (Beats Per Minute) calculation.
+- Live pulse signal extraction from facial skin regions.
 
-* Captures pulse signals from facial skin regions.
-* Estimates BPM continuously using webcam input.
+### Face Detection & Tracking
+- MediaPipe Face Mesh facial landmark detection.
+- Stable facial tracking during moderate movements.
+- Forehead Region of Interest (ROI) extraction for signal acquisition.
 
-### MediaPipe Face Mesh Tracking
-
-* Detects and tracks 468 facial landmarks.
-* Maintains ROI stability during moderate head movement.
-
-### Eye Blink & Closure Detection
-
-* Uses Eye Aspect Ratio (EAR) analysis.
-* Automatically pauses heart rate calculation during eye closure or excessive blinking.
-* Improves signal reliability and accuracy.
+### Eye Blink Detection
+- Eye Aspect Ratio (EAR) based eye state detection.
+- Automatically pauses measurements when eyes are closed.
+- Improves signal quality and reduces noise.
 
 ### Signal Processing Pipeline
+- Green channel signal extraction.
+- Signal detrending for baseline drift removal.
+- Butterworth Bandpass Filtering.
+- Fast Fourier Transform (FFT) based frequency analysis.
+- Accurate BPM estimation from processed signals.
 
-* Signal detrending to remove baseline drift.
-* Butterworth bandpass filtering.
-* FFT-based frequency analysis for BPM estimation.
-
-### Live Signal Visualization
-
-* Displays filtered pulse waveform in real time.
-* Helps users monitor signal quality.
-
-### Interactive OpenCV Interface
-
-* Start and stop monitoring easily.
-* Live camera feed with facial tracking visualization.
+### Interactive GUI
+- Real-time camera feed visualization.
+- Live pulse waveform display.
+- FFT spectrum visualization.
+- Start/Stop monitoring controls.
 
 ---
 
-## 🛠 Technologies Used
+## 🛠️ Technologies Used
 
-| Technology          | Purpose                           |
-| ------------------- | --------------------------------- |
-| Python              | Core Programming Language         |
-| OpenCV              | Video Capture & GUI               |
-| MediaPipe Face Mesh | Facial Landmark Detection         |
-| NumPy               | Numerical Computations            |
-| SciPy               | Signal Processing                 |
-| FFT                 | Frequency Analysis                |
-| rPPG                | Contactless Heart Rate Estimation |
+| Technology | Purpose |
+|------------|---------|
+| Python | Core Programming Language |
+| OpenCV | Video Processing & GUI |
+| MediaPipe | Facial Landmark Detection |
+| NumPy | Numerical Computations |
+| SciPy | Signal Processing |
+| FFT | Frequency Analysis |
+| rPPG | Contactless Heart Rate Detection |
 
 ---
 
@@ -69,84 +59,35 @@ The system tracks facial landmarks in real time, extracts a forehead Region of I
 ```text
 HEARTBEAT_RETINA/
 │
-├── main.py
-├── heartrate.py
-├── utils.py
-├── requirements.txt
+├── analyze_camera.py      # Main application
+├── webcam.py              # Webcam handling
+├── face_detection.py      # Face mesh detection
+├── face_utilities.py      # Landmark utilities & EAR calculation
+├── signal_processing.py   # rPPG signal processing
+├── graph_plot.py          # Signal and FFT visualization
+├── gui.py                 # GUI components
+├── requirements.txt       # Dependencies
 └── README.md
 ```
-
-### main.py
-
-* Application entry point.
-* Handles webcam feed.
-* Performs face tracking.
-* Manages GUI controls.
-* Executes blink detection.
-* Displays BPM and waveform.
-
-### heartrate.py
-
-Contains the `HeartRateDetector` class responsible for:
-
-* Signal buffering
-* Detrending
-* Bandpass filtering
-* FFT analysis
-* BPM estimation
-
-### utils.py
-
-Provides utility functions:
-
-* Eye Aspect Ratio (EAR) calculation
-* ROI average color extraction
-* Facial region processing
-
-### requirements.txt
-
-Contains all project dependencies.
 
 ---
 
 ## ⚙️ Installation
 
-### 1. Clone the Repository
+### Clone Repository
 
 ```bash
 git clone https://github.com/yourusername/HEARTBEAT_RETINA.git
 cd HEARTBEAT_RETINA
 ```
 
-### 2. Create Virtual Environment (Recommended)
-
-```bash
-python -m venv venv
-```
-
-Activate:
-
-**Windows**
-
-```bash
-venv\Scripts\activate
-```
-
-**Linux/Mac**
-
-```bash
-source venv/bin/activate
-```
-
-### 3. Install Dependencies
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
-
-## 📦 Requirements
+Required packages:
 
 ```text
 opencv-python
@@ -155,145 +96,57 @@ numpy
 scipy
 ```
 
-Install manually:
+---
+
+## ▶️ Running the Project
+
+Start the application:
 
 ```bash
-pip install opencv-python mediapipe numpy scipy
+python analyze_camera.py
 ```
+
+### Steps
+
+1. Click **Open** to start the webcam.
+2. Position your face clearly in front of the camera.
+3. Click **Start** to begin heart rate monitoring.
+4. Keep your face steady for accurate measurements.
+5. View BPM and signal graphs in real time.
 
 ---
 
-## 🔬 How the System Works
+## 🔬 How It Works
 
-### Step 1: Face Detection
-
-MediaPipe Face Mesh detects and tracks facial landmarks in real time.
-
-### Step 2: Forehead ROI Extraction
-
-A forehead region is selected using predefined facial landmarks. This area provides a stable skin surface for capturing blood flow information.
-
-### Step 3: Signal Collection
-
-Average green channel intensity values are extracted from the forehead ROI for each frame.
-
-### Step 4: Blink Detection
-
-The Eye Aspect Ratio (EAR) is continuously monitored.
-
-If:
-
-```text
-EAR < 0.20
-```
-
-the application pauses signal updates to avoid noise caused by eye closure or facial movement.
-
-### Step 5: Signal Processing
-
-The collected signal undergoes:
-
-#### Detrending
-
-Removes slow illumination changes and baseline drift.
-
-#### Bandpass Filtering
-
-A 4th-order Butterworth filter isolates physiological frequencies:
-
-```text
-0.7 Hz – 2.0 Hz
-```
-
-Equivalent heart rate range:
-
-```text
-42 BPM – 120 BPM
-```
-
-#### FFT Analysis
-
-Fast Fourier Transform identifies the dominant frequency component.
-
-### Step 6: Heart Rate Estimation
-
-The dominant frequency is converted to BPM:
-
-```text
-Heart Rate (BPM) = Frequency × 60
-```
+1. Webcam captures facial video frames.
+2. MediaPipe detects facial landmarks.
+3. Forehead ROI is extracted.
+4. Average green-channel intensity is calculated.
+5. Signal processing removes noise and drift.
+6. FFT identifies the dominant pulse frequency.
+7. BPM is computed and displayed in real time.
 
 ---
 
-## ▶️ Usage
+## 📊 Applications
 
-Run the application:
-
-```bash
-python main.py
-```
-
-### Instructions
-
-1. Launch the application.
-2. Click the **Start** button.
-3. Position your face within the camera frame.
-4. Keep your head relatively still.
-5. Ensure adequate lighting.
-6. Observe:
-
-   * Live facial tracking
-   * Pulse waveform
-   * Estimated BPM
-7. Press:
-
-```text
-Q
-```
-
-to exit.
+- Contactless health monitoring
+- Telemedicine systems
+- Fitness and wellness tracking
+- Human-computer interaction research
+- Biomedical signal processing education
+- Remote patient monitoring
 
 ---
 
-## 📈 Applications
+## 🎯 Future Enhancements
 
-* Contactless heart rate monitoring
-* Healthcare research
-* Human-computer interaction
-* Telemedicine systems
-* Wellness and fitness tracking
-* Biomedical signal processing education
-
----
-
-## ⚠️ Limitations
-
-* Not intended for medical diagnosis.
-* Accuracy depends on:
-
-  * Lighting conditions
-  * Camera quality
-  * Skin visibility
-  * Motion artifacts
-* Works best when the user remains relatively stationary.
-* Performance may vary across devices.
-
----
-
-## 🔮 Future Enhancements
-
-* Oxygen saturation (SpO₂) estimation
-* Respiratory rate monitoring
-* Heart rate variability (HRV) analysis
-* Multi-person tracking
-* Deep-learning-based rPPG enhancement
-* Mobile deployment support
-
----
-
-## 📄 License
-
-This project is released under the MIT License.
+- Heart Rate Variability (HRV) analysis
+- Multi-person monitoring
+- Blood oxygen estimation
+- Mobile application support
+- Deep Learning-based signal enhancement
+- Cloud-based health analytics
 
 ---
 
@@ -301,4 +154,16 @@ This project is released under the MIT License.
 
 **Akshaya Yarraguntla**
 
-A computer vision and machine learning project demonstrating contactless physiological monitoring using webcam-based Remote Photoplethysmography (rPPG), MediaPipe Face Mesh, and signal processing techniques.
+GitHub: https://github.com/Akshaya44372
+
+---
+
+## 📜 License
+
+This project is developed for educational, research, and portfolio purposes.
+
+---
+
+### Keywords
+
+Remote Photoplethysmography (rPPG) • Heart Rate Monitoring • OpenCV • MediaPipe Face Mesh • Computer Vision • Signal Processing • FFT • Biomedical Engineering • Python
